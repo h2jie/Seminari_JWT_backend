@@ -1,17 +1,30 @@
 import pkg from "jsonwebtoken";
-const { sign, verify } = pkg;   //Importamos las funciones sign y verify de la librería jsonwebtoken
-const JWT_SECRET = process.env.JWT_SECRET || "token.010101010101";
+const { sign, verify } = pkg; 
+const JWT_SECRET = process.env.JWT_SECRET || "token.010101010101"; // Clave para firmar los tokens de acceso
+const REFRESH_SECRET = process.env.REFRESH_SECRET || "refresh.010101010101"; // Clave para firmar refresh token
 
-//No debemos pasar información sensible en el payload, en este caso vamos a pasar como parametro el ID del usuario
-const generateToken = (id:string) => {
-    const jwt = sign({id}, JWT_SECRET, {expiresIn: '20s'});
+// Generar token de acceso con ID de usuario y correo electrónico
+const generateToken = (id: string, email: string) => {
+    const jwt = sign({ id, email }, JWT_SECRET, { expiresIn: '20s' }); 
     return jwt;
 };
 
-const verifyToken = (jwt: string) => {
-    const isOk = verify(jwt, JWT_SECRET);
-    return isOk;
-
+// Generar un token de actualización que contenga únicamente el ID de usuario.
+const generateRefreshToken = (id: string) => {
+    const refreshToken = sign({ id }, REFRESH_SECRET, { expiresIn: '10s' }); 
+    return refreshToken;
 };
 
-export { generateToken, verifyToken };
+// Verificar la validez del token de acceso
+const verifyToken = (jwt: string) => {
+    const isOk = verify(jwt, JWT_SECRET); 
+    return isOk;
+};
+
+// Verificar la validez del refresh token 
+const verifyRefreshToken = (refreshToken: string) => {
+    const isOk = verify(refreshToken, REFRESH_SECRET);
+    return isOk;
+};
+
+export { generateToken, generateRefreshToken, verifyToken, verifyRefreshToken };

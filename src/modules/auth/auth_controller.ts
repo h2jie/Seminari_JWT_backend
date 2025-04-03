@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerNewUser, loginUser, googleAuth } from "../auth/auth_service.js";
+import { registerNewUser, loginUser, refreshAccessToken, googleAuth } from "../auth/auth_service.js";
 
 const registerCtrl = async ({body}: Request, res: Response) => {
     try{
@@ -82,5 +82,28 @@ const googleAuthCallback = async (req: Request, res: Response) => {
     }
 };
 
+const refreshTokenCtrl = async (req: Request, res: Response) => {
+    try {
+        console.log("Refresh token request received:", req.body);
+        const { refreshToken } = req.body;
 
-export { registerCtrl, loginCtrl,googleAuthCtrl, googleAuthCallback };
+        if (!refreshToken) {
+            console.log("No refresh token provided");
+            return res.status(400).json({ message: "Refresh token is required" });
+        }
+
+        const result = await refreshAccessToken(refreshToken);
+        console.log("Refresh result:", result);
+
+        if (result === "INVALID_REFRESH_TOKEN") {
+            return res.status(403).json({ message: "Invalid refresh token" });
+        }
+
+        return res.status(200).json(result);
+    } catch (error: any) {
+        console.error("Error in refresh token controller:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export { registerCtrl, loginCtrl, googleAuthCtrl, googleAuthCallback, refreshTokenCtrl };
