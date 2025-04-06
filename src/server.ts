@@ -69,7 +69,7 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ['./modules/users/*.js', './modules/forum/*.js', './modules/subjects/*.js', './modules/auth/*.js'] // Asegúrate de que esta ruta apunta a tus rutas
+    apis: ['./build/modules/users/*.js', './build/modules/forum/*.js', './build/modules/subjects/*.js', './build/modules/auth/*.js'] // Asegúrate de que esta ruta apunta a tus rutas
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);

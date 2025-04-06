@@ -22,9 +22,9 @@ const loginUser = async ({ email, password }: Auth) => {
     const checkIs = await User.findOne({ email }); // Comprobar si el usuario existe
     if (!checkIs) return "NOT_FOUND_USER";
 
-    const passwordHash = checkIs.password; // Obtener la contraseña encriptada de la base de datos
-    const isCorrect = await verified(password, passwordHash); // Compruebe que la contraseña es correcta
-    if (!isCorrect) return "INCORRECT_PASSWORD";
+    const passwordHash = checkIs.password; //El encriptado que ve de la bbdd
+    const isCorrect = await verified(password, passwordHash);
+    if(!isCorrect) return "INCORRECT_PASSWORD";
 
     const token = generateToken(checkIs._id.toString(), checkIs.email); // Genere un token de acceso y añada el parámetro de correo electrónico
     const refreshToken = generateRefreshToken(checkIs._id.toString()); // Generar token de actualización 
@@ -77,7 +77,7 @@ const googleAuth = async (code: string) => {
             token_type: string;
             id_token?: string;
         }
-
+        //axios --> llibreria que s'utilitza per a fer peticions HTTP
         const tokenResponse = await axios.post<TokenResponse>('https://oauth2.googleapis.com/token', {
             code,
             client_id: process.env.GOOGLE_CLIENT_ID,
@@ -87,19 +87,22 @@ const googleAuth = async (code: string) => {
         });
 
         const access_token = tokenResponse.data.access_token;
-        console.log("Access Token:", access_token);
-        // Obtiene el perfil del usuario
+
+        console.log("Access Token:", access_token); 
+        // Obté el perfil d'usuari
         const profileResponse = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
             params: { access_token },
             headers: { Accept: 'application/json', },
 
         });
 
-        const profile = profileResponse.data as { name: string, email: string; id: string };
-        console.log("Access profile:", profile);
-        // Busca o crea el usuario en la base de datos
-        let user = await User.findOne({
-            $or: [{ name: profile.name }, { email: profile.email }, { googleId: profile.id }]
+
+        const profile = profileResponse.data as {name:string, email: string; id: string };
+        console.log("Access profile:", profile); 
+        // Busca o crea el perfil a la BBDD
+        let user = await User.findOne({ 
+            $or: [{name: profile.name},{ email: profile.email }, { googleId: profile.id }] 
+
         });
 
         if (!user) {
