@@ -91,3 +91,9 @@ GOOGLE_CLIENT_SECRET=your-client-secret
 GOOGLE_OAUTH_REDIRECT_URL=http://localhost:9000/api/auth/google/callback
 ```
 14.- Assegurar que aquestes variables estiguin carregades abans d'iniciar el servidor, utilitzar per defecte npm start per fer RUN en el projecte (ruta per defecte per agafar les variables d'entorn integrada).
+
+
+## Reference
+- https://stackoverflow.com/questions/27726066/jwt-refresh-token-flow
+- https://www.youtube.com/watch?v=cHcpenjrpXw
+- https://www.youtube.com/watch?v=HXwj-_mii3c

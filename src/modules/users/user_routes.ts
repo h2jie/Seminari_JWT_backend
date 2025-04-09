@@ -80,11 +80,11 @@ router.post('/users', createUserHandler);
  *               items:
  *                 type: object
  *                 properties:
- *                  name:
+ *                   name:
  *                     type: string
- *                  age:
- *                    type: integer
- *                  email:
+ *                   age:
+ *                     type: integer
+ *                   email:
  *                     type: string
  */
 router.get('/users', checkJwt, getAllUsersHandler);
@@ -111,12 +111,12 @@ router.get('/users', checkJwt, getAllUsersHandler);
  *             schema:
  *               type: object
  *               properties:
- *                  name:
+ *                 name:
  *                   type: string
  *                 age:
  *                   type: integer
  *                 email:
- *                    type: string
+ *                   type: string
  *       404:
  *         description: Usuario no encontrado
  */
@@ -143,12 +143,12 @@ router.get('/users/:id', getUserByIdHandler);
  *           schema:
  *             type: object
  *             properties:
- *                 name:
- *                   type: string
- *                 age:
- *                   type: integer
- *                 email:
- *                    type: string
+ *               name:
+ *                 type: string
+ *               age:
+ *                 type: integer
+ *               email:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Usuario actualizado exitosamente

@@ -5,13 +5,13 @@ const REFRESH_SECRET = process.env.REFRESH_SECRET || "refresh.010101010101"; // 
 
 // Generar token de acceso con ID de usuario y correo electrónico
 const generateToken = (id: string, email: string) => {
-    const jwt = sign({ id, email }, JWT_SECRET, { expiresIn: '20s' }); 
+    const jwt = sign({ id, email }, JWT_SECRET, { expiresIn: '10s' }); 
     return jwt;
 };
 
 // Generar un token de actualización que contenga únicamente el ID de usuario.
 const generateRefreshToken = (id: string) => {
-    const refreshToken = sign({ id }, REFRESH_SECRET, { expiresIn: '10s' }); 
+    const refreshToken = sign({ id }, REFRESH_SECRET, { expiresIn: '100s' }); 
     return refreshToken;
 };
 
